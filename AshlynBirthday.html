@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Virtual Candlelight Dinner for Ashlyn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3rem;
+      margin-top: 2rem;
+    }
+
+    .container {
+      display: none;
+      animation: fadeIn 2s forwards;
+    }
+
+    .show {
+      display: block;
+    }
+
+    .button {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      background: lightskyblue;
+      color: white;
+      border: none;
+      border-radius: 2rem;
+      cursor: pointer;
+      margin-top: 2rem;
+    }
+
+    .candle {
+      width: 40px;
+      height: 100px;
+      background: #fff3e0;
+      border-radius: 10px;
+      margin: 20px auto;
+      position: relative;
+      box-shadow: 0 0 20px rgba(255,255,200,0.2);
+    }
+
+    .flame {
+      width: 20px;
+      height: 40px;
+      background: orange;
+      border-radius: 50%;
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: flicker 1s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; transform: translateX(-50%) scaleY(1); }
+      50% { opacity: 0.6; transform: translateX(-50%) scaleY(1.1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .main-content {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin: 2rem auto;
+      max-width: 1000px;
+    }
+
+    .poem {
+      flex: 1;
+      min-width: 300px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 1rem;
+      padding: 1rem;
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .photo-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      animation: popIn 1s ease forwards;
+    }
+
+    .polaroid {
+      background: white;
+      padding: 10px;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      width: 200px;
+    }
+
+    .polaroid img {
+      width: 100%;
+      border-radius: 0.5rem;
+    }
+
+    .caption {
+      color: #333;
+      font-weight: bold;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    .call-link {
+      margin-top: 2rem;
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      background: #4caf50;
+      color: white;
+      text-decoration: none;
+      border-radius: 1rem;
+      font-weight: bold;
+    }
+
+    audio {
+      display: none;
+    }
+
+    #love-letter {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.8s ease;
+      margin: 2rem auto;
+      max-width: 600px;
+      background: rgba(255,255,255,0.05);
+      padding: 0 1rem;
+      border-radius: 1rem;
+    }
+
+    #love-letter.show {
+      opacity: 1;
+      padding: 1rem;
+      max-height: 500px;
+    }
+
+    .emoji {
+      position: fixed;
+      top: -5%;
+      font-size: 2rem;
+      animation: fall linear infinite;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(120vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Happy Birthday, Ashlyn 🎂</h1>
+
+  <button class="button" onclick="startDinner()">Start Our Dinner</button>
+
+  <div id="dinner" class="container">
+    <div class="candle">
+      <div class="flame"></div>
+    </div>
+
+    <div class="main-content">
+      <div class="poem">
+        <p>In the hush of the night, I light this flame,<br>
+        Not just for love, but to whisper your name.</p>
+
+        <p>Ashlyn, in every star that shines above,<br>
+        I see reflections of your light and love.</p>
+
+        <p>The miles may stretch like endless sea,<br>
+        But your heart still beats right next to me.</p>
+
+        <p>Through screens and time, I feel you near,<br>
+        In every silence, I still hear.</p>
+
+        <p>Your laughter echoes inside my soul,<br>
+        You're the missing piece that makes me whole.</p>
+
+        <p>Not even the moon has seen a glow<br>
+        As pure as the love you daily show.</p>
+
+        <p>This dinner, this flame, this gentle night,<br>
+        Is just my way to hold you tight.</p>
+
+        <p>I want a life where we dance in the rain,<br>
+        Where joy is plenty and there's no more pain.</p>
+
+        <p>Let’s chase every sunset, kiss every dawn,<br>
+        Write new stories till all fears are gone.</p>
+
+        <p>When your voice says my name, I melt within,<br>
+        My heart finds peace, where your love has been.</p>
+
+        <p>Until the day I kiss your face,<br>
+        This virtual hug will take its place.</p>
+
+        <p>Slow down, my love, and breathe me in,<br>
+        We’ve already begun where love has no end.</p>
+
+        <p>You're my moon, my stars, my candlelight<br>
+        My forever wish, my soul’s delight.</p>
+
+        <p>So until I’m with you, holding you tight,<br>
+        I’ll love you from afar… every day and every night.</p>
+      </div>
+
+      <div class="photo-gallery">
+        <div class="polaroid">
+          <img src="1000007318.jpg" alt="Ashlyn smiling with joy">
+          <div class="caption">That smile makes the world brighter 💫</div>
+        </div>
+        <div class="polaroid">
+          <img src="1000007319.jpg" alt="Ashlyn glowing beautifully">
+          <div class="caption">A goddess in every light ✨</div>
+        </div>
+      </div>
+    </div>
+
+    <a class="call-link" href="https://your-video-call-link.com" target="_blank">Join Our Video Call 💖</a>
+  </div>
+
+  <button onclick="toggleLetter()" class="button">Read My Letter to You</button>
+
+  <div id="love-letter">
+    <p>Dear Ashlyn,<br><br>
+    I built this page to bring you closer to me tonight. I wish I could light this candle in person, hold your hand, and remind you that you are my world...<br><br>
+    You deserve to feel loved not just today but every day. You make life sweeter, brighter, and more meaningful. I am proud of the woman you are, and grateful to be yours.<br><br>
+    Happy Birthday, my Queen.<br><br>
+    — Ashanti ❤️
+    </p>
+  </div>
+
+  <audio id="bg-music" src="slowdown.mp3"></audio>
+
+  <script>
+    function startDinner() {
+      document.getElementById('dinner').classList.add('show');
+      const audio = document.getElementById('bg-music');
+      audio.volume = 0.7;
+      audio.play();
+    }
+
+    function toggleLetter() {
+      const letter = document.getElementById('love-letter');
+      letter.classList.toggle('show');
+    }
+
+    const emojis = ['💙', '🌸'];
+    const emojiCount = 30;
+
+    for (let i = 0; i < emojiCount; i++) {
+      const emoji = document.createElement('span');
+      emoji.classList.add('emoji');
+      emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      emoji.style.left = Math.random() * 100 + 'vw';
+      emoji.style.animationDuration = (5 + Math.random() * 5) + 's';
+      emoji.style.fontSize = (1.5 + Math.random() * 1.5) + 'rem';
+      emoji.style.animationDelay = Math.random() * 5 + 's';
+      document.body.appendChild(emoji);
+    }
+  </script>
+</body>
+</html>
