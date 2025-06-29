@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pac-Ashlyn: Chase My Heart</title>
+  <style>
+    body {
+      background: #111;
+      color: #eee;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      user-select: none;
+      margin: 0;
+      padding: 1rem;
+    }
+    canvas {
+      background: #000;
+      margin: 0 auto;
+      display: block;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px #e91e63;
+    }
+    #sprintMessage {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      min-height: 1.5em;
+    }
+    h1 {
+      margin-bottom: 1rem;
+      color: #e91e63;
+      font-family: 'Great Vibes', cursive;
+      font-size: 3rem;
+    }
+    .button {
+      margin-top: 1rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+      background: lightskyblue;
+      color: #111;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background: deepskyblue;
+    }
+  </style>
+</head>
+<body>
+  <h1>💗 Pac-Ashlyn: Chase My Heart 💗</h1>
+  <canvas id="sprintGame" width="400" height="280"></canvas>
+  <p id="sprintMessage"></p>
+  <button class="button" onclick="startPacGame()">Restart Game</button>
+
+  <script>
+    const canvas = document.getElementById("sprintGame");
+    const ctx = canvas.getContext("2d");
+    const tileSize = 40;
+    let maze, ashlyn, ghosts, hearts, keysPressed, gameInterval, gameWon = false;
+
+    function startPacGame() {
+      document.getElementById("sprintMessage").textContent = "";
+      keysPressed = {};
+      gameWon = false;
+
+      maze = [
+        [1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,1,0,0,0,1],
+        [1,0,1,1,0,1,0,1,0,1],
+        [1,0,1,0,0,0,0,1,0,1],
+        [1,0,1,0,1,1,0,1,0,1],
+        [1,0,0,0,1,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1],
+      ];
+
+      ashlyn = { x: 1, y: 1, color: "#e91e63" };
+      ghosts = [
+        { x: 8, y: 1, color: "#4caf50", dx: 0, dy: 1 },
+        { x: 1, y: 5, color: "#2196f3", dx: 1, dy: 0 }
+      ];
+
+      hearts = [
+        { x: 3, y: 1 }, { x: 5, y: 5 }, { x: 7, y: 3 }
+      ];
+
+      document.addEventListener("keydown", e => keysPressed[e.key] = true);
+      document.addEventListener("keyup", e => keysPressed[e.key] = false);
+
+      if(gameInterval) clearInterval(gameInterval);
+      gameInterval = setInterval(gameLoop, 150);
+    }
+
+    function drawTile(x, y, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+    }
+
+    function drawMaze() {
+      for (let y = 0; y < maze.length; y++) {
+        for (let x = 0; x < maze[y].length; x++) {
+          drawTile(x, y, maze[y][x] === 1 ? "#333" : "#000");
+        }
+      }
+    }
+
+    function drawHeart(x, y) {
+      ctx.font = "24px Arial";
+      ctx.fillText("💗", x * tileSize + 10, y * tileSize + 30);
+    }
+
+    function drawCharacter(character, label) {
+      drawTile(character.x, character.y, character.color);
+      ctx.fillStyle = "#fff";
+      ctx.font = "bold 14px Arial";
+      ctx.fillText(label, character.x * tileSize + 5, character.y * tileSize + 30);
+    }
+
+    function moveAshlyn() {
+      let dx = 0, dy = 0;
+      if (keysPressed["ArrowUp"]) dy = -1;
+      else if (keysPressed["ArrowDown"]) dy = 1;
+      else if (keysPressed["ArrowLeft"]) dx = -1;
+      else if (keysPressed["ArrowRight"]) dx = 1;
+
+      const newX = ashlyn.x + dx;
+      const newY = ashlyn.y + dy;
+
+      if (maze[newY] && maze[newY][newX] === 0) {
+        ashlyn.x = newX;
+        ashlyn.y = newY;
+      }
+    }
+
+    function moveGhosts() {
+      ghosts.forEach(g => {
+        let newX = g.x + g.dx;
+        let newY = g.y + g.dy;
+
+        if (maze[newY] && maze[newY][newX] === 0) {
+          g.x = newX;
+          g.y = newY;
+        } else {
+          const dirs = [
+            { dx: 1, dy: 0 },
+            { dx: -1, dy: 0 },
+            { dx: 0, dy: 1 },
+            { dx: 0, dy: -1 }
+          ];
+          const dir = dirs[Math.floor(Math.random() * dirs.length)];
+          g.dx = dir.dx;
+          g.dy = dir.dy;
+        }
+      });
+    }
+
+    function checkCollisions() {
+      // Check if ghost catches Ashley
+      for (let g of ghosts) {
+        if (g.x === ashlyn.x && g.y === ashlyn.y) {
+          clearInterval(gameInterval);
+          document.getElementById("sprintMessage").textContent = "💔 A ghost caught Ashlyn! Try again.";
+          return true;
+        }
+      }
+
+      // Remove collected hearts
+      hearts = hearts.filter(h => !(h.x === ashlyn.x && h.y === ashlyn.y));
+
+      // Check win condition
+      if (hearts.length === 0 && !gameWon) {
+        clearInterval(gameInterval);
+        gameWon = true;
+        document.getElementById("sprintMessage").textContent = "💖 Ashlyn collected all the hearts and won Ashanti’s love!";
+      }
+      return false;
+    }
+
+    function gameLoop() {
+      drawMaze();
+      moveAshlyn();
+      moveGhosts();
+      if (checkCollisions()) return;
+      hearts.forEach(h => drawHeart(h.x, h.y));
+      drawCharacter(ashlyn, "A");
+      ghosts.forEach(() => drawCharacter(ghosts.shift(), "👻")); // Draw ghosts & remove from array temporarily
+      // We need to restore ghosts array (fix above)
+      ghosts = ghosts.concat(ghosts);
+    }
+
+    // Fix ghost drawing logic to not lose ghosts from array
+    function gameLoop() {
+      drawMaze();
+      moveAshlyn();
+      moveGhosts();
+      if (checkCollisions()) return;
+      hearts.forEach(h => drawHeart(h.x, h.y));
+      drawCharacter(ashlyn, "A");
+      ghosts.forEach(g => drawCharacter(g, "👻"));
+    }
+
+    startPacGame();
+  </script>
+</body>
+</html>
